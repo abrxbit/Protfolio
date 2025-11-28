@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Abrar Raiyan | Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    html, body { width:100%; height:100%; margin:0; padding:0; font-family:'Inter', sans-serif; scroll-behavior: smooth; }
+    * { box-sizing:border-box; }
+    a { text-decoration:none; cursor:pointer; }
+
+    /* NAVBAR */
+    nav { position:fixed; width:100%; background:#fff; top:0; left:0; padding:1rem 2rem; display:flex; justify-content:space-between; align-items:center; box-shadow:0 2px 10px rgba(0,0,0,0.1); z-index:100; }
+    nav .logo { font-weight:700; font-size:1.2rem; color:#007bff; }
+    nav ul { display:flex; gap:2rem; list-style:none; }
+    nav ul li a { font-weight:600; color:#333; transition:0.3s; }
+    nav ul li a:hover { color:#007bff; }
+
+    /* HERO */
+    .hero {
+      display:flex;
+      flex-direction:column;
+      justify-content:center;
+      align-items:center;
+      text-align:center;
+      height:100vh;
+      background:linear-gradient(135deg,#007bff,#00c6ff);
+      color:#fff;
+      padding:0 2rem;
+      position:relative;
+      overflow:hidden;
+      width:100vw;      
+      border-radius:5%;
+    }
+    .hero h1 { font-size:3rem; margin-bottom:1rem; transition:all 0.6s ease; }
+    .hero .subtitle { font-size:1.2rem; margin-bottom:2rem; height:28px; color:#fff; }
+    .hero a { padding:0.8rem 2rem; background:#fff; color:#007bff; border-radius:50px; font-weight:600; transition: all 0.4s ease; }
+    .hero a:hover { background:#e0e0e0; transform: scale(1.05); }
+
+    /* Animated circles */
+    .circle {
+      position:absolute;
+      border-radius:50%;
+      background: rgba(255,255,255,0.15);
+      animation: popUp 4s ease-in-out infinite alternate;
+      opacity:0;
+    }
+    .circle:nth-child(1) { width:300px; height:300px; top:10%; left:5%; animation-delay:0s; }
+    .circle:nth-child(2) { width:400px; height:400px; bottom:5%; right:10%; animation-delay:1s; background: rgba(255,255,255,0.1); }
+    .circle:nth-child(3) { width:200px; height:200px; top:30%; right:15%; animation-delay:2s; background: rgba(255,255,255,0.2); }
+    .circle:nth-child(4) { width:250px; height:250px; bottom:20%; left:20%; animation-delay:3s; background: rgba(255,255,255,0.12); }
+
+    @keyframes popUp {
+      0% { transform: scale(0.5) translateY(0px); opacity:0; }
+      50% { transform: scale(1.1) translateY(-10px); opacity:0.6; }
+      100% { transform: scale(1) translateY(-5px); opacity:0.4; }
+    }
+
+    section { padding:6rem 2rem; width:100vw; }
+
+    .about { display:flex; flex-wrap:wrap; align-items:center; gap:3rem; max-width:1200px; margin:0 auto; }
+    .about img { width:300px; border-radius:15px; box-shadow:0 10px 20px rgba(0,0,0,0.1); transition: all 0.5s ease; }
+    .about img:hover { transform: scale(1.05); }
+    .about div { flex:1; }
+    .about h2 { color:#007bff; font-size:2.5rem; margin-bottom:1rem; transition: all 0.5s ease; }
+    .about p { font-size:1.1rem; line-height:1.8; transition: all 0.5s ease; }
+
+    /* SKILLS */
+    .skills { display:flex; flex-wrap:wrap; gap:1.5rem; justify-content:center; margin-top:2rem; }
+    .skill { 
+      background:#fff; 
+      padding:1.5rem; 
+      border-radius:15px; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15); 
+      text-align:center; 
+      flex:1 1 200px; 
+      transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.6s ease, transform 0.6s ease; 
+      opacity:0;
+      transform: translateY(30px);
+    }
+    .skill.visible { opacity:1; transform:translateY(0); }
+    .skill:hover { 
+      transform:translateY(-10px) scale(1.03); 
+      box-shadow:0 20px 35px rgba(0,0,0,0.2); 
+    }
+    .skill h3 { margin-bottom:0.5rem; color:#007bff; }
+
+    .projects { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2rem; margin-top:2rem; max-width:1200px; margin-left:auto; margin-right:auto; }
+    .project { background:#fff; border-radius:15px; overflow:hidden; box-shadow:0 10px 25px rgba(0,0,0,0.08); transition: transform 0.5s ease, box-shadow 0.5s ease, opacity 0.6s ease, transform 0.6s ease; cursor:pointer; opacity:0; transform:translateY(30px);}
+    .project.visible { opacity:1; transform:translateY(0); }
+    .project img { width:100%; height:180px; object-fit:cover; transition: all 0.5s ease; }
+    .project .content { padding:1rem 1.5rem; }
+    .project h3 { color:#007bff; margin-bottom:0.5rem; transition: all 0.4s ease; }
+    .project p { font-size:0.95rem; margin-bottom:1rem; transition: all 0.4s ease; }
+    .project a { color:#007bff; font-weight:600; transition: all 0.4s ease; }
+    .project:hover { transform:translateY(-10px) scale(1.02); box-shadow:0 15px 30px rgba(0,0,0,0.12); }
+
+    /* CONTACT */
+    .contact { text-align:center; opacity:0; transform:translateY(30px); transition: all 0.6s ease; }
+    .contact.visible { opacity:1; transform:translateY(0);}
+    .contact a { display:inline-block; margin:0.5rem; padding:0.8rem 2rem; color:#fff; border-radius:50px; font-weight:600; transition: all 0.4s ease; cursor:pointer; }
+    .contact a:hover { transform:scale(1.05); }
+    .btn-email { background:#007bff; } .btn-email:hover { background:#0056b3; }
+    .btn-github { background:#000; } .btn-github:hover { background:#333; }
+    .btn-linkedin { background:#0077b5; } .btn-linkedin:hover { background:#005582; }
+    .btn-instagram { background:linear-gradient(45deg, #feda75, #fa7e1e, #d62976, #962fbf, #4f5bd5); } .btn-instagram:hover { filter:brightness(1.1); }
+    .btn-vsco { background:#111; } .btn-vsco:hover { background:#333; }
+
+    footer { text-align:center; padding:2rem; color:#777; border-top:1px solid #e2e6ea; margin-top:4rem; opacity:0; transform:translateY(30px); transition: all 0.6s ease;}
+    footer.visible { opacity:1; transform:translateY(0); }
+
+    .fade-in { opacity:0; transform:translateY(30px); animation:fadeIn 1s ease forwards; }
+    .fade-in-delay { animation-delay:0.3s; }
+    .fade-in-delay-2 { animation-delay:0.6s; }
+    @keyframes fadeIn { to { opacity:1; transform:translateY(0); } }
+
+    @media(max-width:768px){
+      .about { flex-direction:column; text-align:center; }
+      .about img { margin:auto; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav>
+    <div class="logo">Abrar Raiyan</div>
+    <ul>
+      <li><a href="#about" class="nav-link">About</a></li>
+      <li><a href="#skills" class="nav-link">Skills</a></li>
+      <li><a href="#projects" class="nav-link">Projects</a></li>
+      <li><a href="#contact" class="nav-link">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+
+    <h1 class="fade-in">Hi, I'm Abrar Raiyan</h1>
+    <div class="subtitle fade-in fade-in-delay" id="typed-text"></div>
+    <a href="#contact" class="fade-in fade-in-delay-2 nav-link">Get in Touch</a>
+  </section>
+
+  <!-- ABOUT -->
+  <section id="about" class="about">
+    <img src="https://i.postimg.cc/4x7JLLhY/1c6f254d-57df-4de1-ae28-1924fca55258.jpg" alt="Abrar Raiyan">
+    <div>
+      <h2>About Me</h2>
+      <p>Hi! I’m Abrar Raiyan, a student who is building himself for the future. I have a strong passion for technology and creativity—skilled in HTML, CSS, and JavaScript, and eager to dive into AI and Machine Learning. Outside of coding, I enjoy gaming, listening to music, and playing guitar. I’ve completed projects that enhanced my problem-solving skills, won a university hackathon, and contributed to collaborative coding challenges. My ultimate goal is to become an AI Developer at Google, turning innovative ideas into real-world solutions.</p>
+    </div>
+  </section>
+
+  <!-- SKILLS -->
+  <section id="skills">
+    <h2 style="text-align:center; color:#007bff;">My Skills</h2>
+    <div class="skills">
+      <div class="skill"> <h3>HTML & CSS</h3> <p>Advanced</p> </div>
+      <div class="skill"> <h3>JavaScript</h3> <p>Intermediate</p> </div>
+      <div class="skill"> <h3>Python</h3> <p>Intermediate</p> </div>
+      <div class="skill"> <h3>Cybersecurity</h3> <p>Beginner-Intermediate</p> </div>
+    </div>
+  </section>
+
+  <!-- PROJECTS -->
+  <section id="projects">
+    <h2 style="text-align:center; color:#007bff;">Projects</h2>
+    <div class="projects">
+      <div class="project">
+        <img src="https://i.postimg.cc/t4xjtsLP/1a0e1fc8e6bef300f73d6bc0b99ba3c0.jpg" alt="Portfolio Website">
+        <div class="content">
+          <h3>Portfolio Website</h3>
+          <p>Personal portfolio built using HTML, CSS, and JavaScript showcasing my skills.</p>
+          <a href="#">View Project</a>
+        </div>
+      </div>
+      <div class="project">
+        <img src="https://i.postimg.cc/yY5KZmrs/download.jpg" alt="Cybersecurity Tool">
+        <div class="content">
+          <h3>Cybersecurity Tool</h3>
+          <p>Developed a security analysis tool to detect vulnerabilities and generate reports.</p>
+          <a href="#">View Project</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact" class="contact">
+    <h2 style="color:#007bff;">Contact Me</h2>
+    <p>Email: abrarraiyan36@gmail.com</p>
+    <div>
+      <a href="mailto:abrarraiyan36@gmail.com" class="btn-email">Send Email</a>
+      <a href="https://github.com/Abrar-Raiyan" target="_blank" class="btn-github">GitHub</a>
+      <a href="https://www.linkedin.com/in/abrar-raiyan-85a886245/" target="_blank" class="btn-linkedin">LinkedIn</a>
+      <a href="https://www.instagram.com/yyc.abr4r?igsh=YXdrNWJkZ3R0MzNh" target="_blank" class="btn-instagram">Instagram</a>
+      <a href="https://vsco.co/raiyan86/gallery?fbclid=PAVERDUAMeaGRleHRuA2FlbQIxMAABpyvSlGdpi6bDhiePrg3nduZ9wc9Uz38qhUa3CVplDVdlr2pBaDEYAUmmOMGZ_aem_X0h3UwVynLzwZ_BIafG3zQ" target="_blank" class="btn-vsco">VSCO</a>
+    </div>
+  </section>
+
+  <footer>
+    &copy; 2025 Abrar Raiyan. All Rights Reserved.
+  </footer>
+
+  <script>
+    // Smooth Scroll
+    const links = document.querySelectorAll('.nav-link');
+    links.forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const target = document.querySelector(link.getAttribute('href'));
+        target.scrollIntoView({ behavior: 'smooth' });
+      });
+    });
+
+    // Typing effect
+    const text = "I build web apps, explore AI & Machine Learning, and love creative tech projects.";
+    let i = 0;
+    const typedText = document.getElementById('typed-text');
+    function type() {
+      if(i < text.length) {
+        typedText.innerHTML += text.charAt(i);
+        i++;
+        setTimeout(type, 50);
+      }
+    }
+    type();
+
+    // Scroll animation using IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if(entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.skill, .project, .contact, footer, .about h2, .about p, .about img').forEach(el => {
+      observer.observe(el);
+    });
+  </script>
+
+</body>
+</html>
