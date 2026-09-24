@@ -29,7 +29,7 @@
       --glass-edge: rgba(255, 255, 255, .17);
       --glass-edge-soft: rgba(255, 255, 255, .08);
       --glass-shadow: 0 24px 80px rgba(0, 0, 0, .32), inset 0 1px 0 rgba(255, 255, 255, .12);
-      --glass-blur: blur(28px) saturate(155%);
+      --glass-blur: blur(18px) saturate(145%);
       --radius: 28px;
       --max: 1180px;
     }
@@ -64,7 +64,6 @@
     .liquid-orb {
       position: absolute;
       border-radius: 999px;
-      filter: blur(1px);
       opacity: .7;
       mix-blend-mode: screen;
       animation: drift 18s ease-in-out infinite alternate;
@@ -226,7 +225,7 @@
     nav.scrolled {
       background: linear-gradient(145deg, rgba(19,30,47,.56), rgba(11,19,31,.35));
       border-color: rgba(255,255,255,.2);
-      transform: translateY(-3px) scale(.99);
+      transform: translateY(-2px);
     }
     .brand { font-weight: 800; letter-spacing: -.025em; padding: 0 4px; }
     .brand span { color: var(--blue); text-shadow: 0 0 18px rgba(124,199,255,.55); }
@@ -614,51 +613,6 @@
     :focus-visible { outline: 2px solid rgba(151,214,255,.9); outline-offset: 4px; }
 
 
-    /* =========================
-       MOTION POLISH ONLY
-       Keeps the visual design unchanged; only eases existing interactions.
-    ========================= */
-    @media (hover: hover) and (pointer: fine) {
-      .hero-card,
-      .about-note,
-      .stat,
-      .skill-card,
-      .project-card,
-      .contact-link,
-      .btn,
-      .nav-links a,
-      .nav-cta,
-      .project-link {
-        transition-timing-function: cubic-bezier(.16, 1, .3, 1);
-      }
-
-      .hero-card,
-      .skill-card,
-      .project-card {
-        transition-duration: .58s;
-      }
-
-      .about-note,
-      .stat,
-      .contact-link,
-      .btn,
-      .nav-links a,
-      .nav-cta,
-      .project-link {
-        transition-duration: .42s;
-      }
-
-      .project-image img {
-        transition-duration: .82s, .62s;
-        transition-timing-function: cubic-bezier(.16, 1, .3, 1), ease;
-      }
-    }
-
-    .reveal {
-      transition-timing-function: cubic-bezier(.16, 1, .3, 1);
-      transition-duration: .86s;
-    }
-
     @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
       nav, .hero-badge, .hero-card, .about-panel, .about-note, .quote-card, .stat, .skill-card, .project-card, .contact-card, .contact-link, .btn-secondary, .nav-links.open {
         background: rgba(13, 23, 38, .94);
@@ -720,14 +674,18 @@
       .reveal { opacity: 1; transform: none; filter: none; }
       .liquid-orb { animation: none; }
     }
+  
+    /* 3D tilt hover — added */
+    .tilt{transform-style:preserve-3d;will-change:transform}
+    .tilt .skill-icon,.tilt h3,.tilt p,.tilt .note-label,.tilt .lore-pills,.tilt strong,.tilt .project-image,.tilt .project-body,.tilt .quote-mark{transform:translateZ(45px)}
   </style>
+<base target="_blank">
 </head>
 <body>
   <div class="liquid-scene" aria-hidden="true">
     <span class="liquid-orb"></span>
     <span class="liquid-orb"></span>
     <span class="liquid-orb"></span>
-    <span class="grain"></span>
   </div>
   <div class="nav-wrap">
     <nav aria-label="Primary navigation">
@@ -747,7 +705,6 @@
     <section class="hero" id="home">
       <div class="container hero-grid">
         <div class="reveal visible">
-          <div class="hero-badge"><span class="dot"></span> Building for the future</div>
           <h1><span class="gradient">Abrar Raiyan</span><br />Developer.</h1>
           <p class="hero-copy">I build practical web experiences, explore AI & machine learning, and turn creative technology ideas into clean, usable products.</p>
           <div class="hero-actions">
@@ -757,7 +714,7 @@
         </div>
 
         <div class="hero-card reveal">
-          <img src="https://i.postimg.cc/4x7JLLhY/1c6f254d-57df-4de1-ae28-1924fca55258.jpg" alt="Portrait of Abrar Raiyan" />
+          <img src="https://i.postimg.cc/4x7JLLhY/1c6f254d-57df-4de1-ae28-1924fca55258.jpg" fetchpriority="high" decoding="async" alt="Portrait of Abrar Raiyan" />
           <div class="hero-card-meta">
             <div><strong>Abrar Raiyan</strong><span>Web · AI · Creative Tech</span></div>
             <div class="status-pill">Open to ideas</div>
@@ -847,17 +804,17 @@
         </div>
 
         <div class="project-grid">
-          <article class="project-card reveal"><div class="project-image"><img loading="lazy" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=1000&q=85" alt="Calculator project preview" /></div><div class="project-body"><div class="project-top"><h3>Calculator</h3><span class="tag">JavaScript</span></div><p>A responsive calculator built with HTML, CSS and JavaScript.</p><a class="project-link" href="https://abrxbit.github.io/calculator/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
+          <article class="project-card reveal"><div class="project-image"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?w=900&q=78" alt="Calculator project preview" /></div><div class="project-body"><div class="project-top"><h3>Calculator</h3><span class="tag">JavaScript</span></div><p>A responsive calculator built with HTML, CSS and JavaScript.</p><a class="project-link" href="https://abrxbit.github.io/calculator/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
 
-          <article class="project-card reveal"><div class="project-image"><img loading="lazy" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=1000&q=85" alt="Chatbot project preview" /></div><div class="project-body"><div class="project-top"><h3>Script Base Chatbot</h3><span class="tag">Logic</span></div><p>A rule-based chatbot built with JavaScript and custom conversation logic.</p><a class="project-link" href="https://abrxbit.github.io/Script-Base-Chatbot/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
+          <article class="project-card reveal"><div class="project-image"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?w=900&q=78" alt="Chatbot project preview" /></div><div class="project-body"><div class="project-top"><h3>Script Base Chatbot</h3><span class="tag">Logic</span></div><p>A rule-based chatbot built with JavaScript and custom conversation logic.</p><a class="project-link" href="https://abrxbit.github.io/Script-Base-Chatbot/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
 
-          <article class="project-card reveal"><div class="project-image"><img loading="lazy" src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1000&q=85" alt="Password generator project preview" /></div><div class="project-body"><div class="project-top"><h3>Password Generator</h3><span class="tag">Security</span></div><p>Create secure and customizable passwords through a simple interface.</p><a class="project-link" href="https://abrxbit.github.io/Password-Generator/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
+          <article class="project-card reveal"><div class="project-image"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=900&q=78" alt="Password generator project preview" /></div><div class="project-body"><div class="project-top"><h3>Password Generator</h3><span class="tag">Security</span></div><p>Create secure and customizable passwords through a simple interface.</p><a class="project-link" href="https://abrxbit.github.io/Password-Generator/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
 
-          <article class="project-card reveal"><div class="project-image"><img loading="lazy" src="https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=1000&q=85" alt="Unit converter project preview" /></div><div class="project-body"><div class="project-top"><h3>Unit Converter</h3><span class="tag">Utility</span></div><p>Convert between different units with a clean, straightforward interface.</p><a class="project-link" href="https://abrxbit.github.io/Unit-Converter/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
+          <article class="project-card reveal"><div class="project-image"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1581092335397-9583eb92d232?w=900&q=78" alt="Unit converter project preview" /></div><div class="project-body"><div class="project-top"><h3>Unit Converter</h3><span class="tag">Utility</span></div><p>Convert between different units with a clean, straightforward interface.</p><a class="project-link" href="https://abrxbit.github.io/Unit-Converter/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
 
-          <article class="project-card reveal"><div class="project-image"><img loading="lazy" src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=1000&q=85" alt="Expense tracker project preview" /></div><div class="project-body"><div class="project-top"><h3>Expense Tracker</h3><span class="tag">Finance</span></div><p>A simple way to track income and expenses through the browser.</p><a class="project-link" href="https://abrxbit.github.io/Expense-Tracker/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
+          <article class="project-card reveal"><div class="project-image"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1554224154-26032ffc0d07?w=900&q=78" alt="Expense tracker project preview" /></div><div class="project-body"><div class="project-top"><h3>Expense Tracker</h3><span class="tag">Finance</span></div><p>A simple way to track income and expenses through the browser.</p><a class="project-link" href="https://abrxbit.github.io/Expense-Tracker/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
 
-          <article class="project-card reveal"><div class="project-image"><img loading="lazy" src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=1000&q=85" alt="Habit tracker project preview" /></div><div class="project-body"><div class="project-top"><h3>Habit Tracker</h3><span class="tag">Productivity</span></div><p>Monitor daily habits and build consistency with a focused tracker.</p><a class="project-link" href="https://abrxbit.github.io/Habit-Tracker/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
+          <article class="project-card reveal"><div class="project-image"><img loading="lazy" decoding="async" src="https://images.unsplash.com/photo-1499750310107-5fef28a66643?w=900&q=78" alt="Habit tracker project preview" /></div><div class="project-body"><div class="project-top"><h3>Habit Tracker</h3><span class="tag">Productivity</span></div><p>Monitor daily habits and build consistency with a focused tracker.</p><a class="project-link" href="https://abrxbit.github.io/Habit-Tracker/" target="_blank" rel="noopener noreferrer">View live project ↗</a></div></article>
         </div>
       </div>
     </section>
@@ -899,11 +856,14 @@
     });
 
     document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', () => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
         navLinks.classList.remove('open');
         menuBtn.setAttribute('aria-expanded', 'false');
         menuBtn.setAttribute('aria-label', 'Open navigation');
         menuBtn.textContent = '☰';
+        const target = document.querySelector(link.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth' });
       });
     });
 
@@ -927,111 +887,33 @@
     }, { rootMargin: '-35% 0px -55% 0px' });
     document.querySelectorAll('main section[id]').forEach(section => sectionObserver.observe(section));
 
-    // Liquid Glass interaction: same effect, but with eased pointer-following motion.
-    const glassTargets = document.querySelectorAll('nav, .hero-badge, .hero-card, .about-panel, .about-note, .quote-card, .stat, .skill-card, .project-card, .contact-card, .contact-link, .btn-secondary');
-    const supportsFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-
-    if (supportsFinePointer) {
-      glassTargets.forEach(el => {
-        let currentX = 28;
-        let currentY = 12;
-        let targetX = 28;
-        let targetY = 12;
-        let frame = null;
-
-        const animateReflection = () => {
-          currentX += (targetX - currentX) * 0.14;
-          currentY += (targetY - currentY) * 0.14;
-
-          el.style.setProperty('--mx', `${currentX}%`);
-          el.style.setProperty('--my', `${currentY}%`);
-
-          if (Math.abs(targetX - currentX) > 0.03 || Math.abs(targetY - currentY) > 0.03) {
-            frame = requestAnimationFrame(animateReflection);
-          } else {
-            currentX = targetX;
-            currentY = targetY;
-            el.style.setProperty('--mx', `${currentX}%`);
-            el.style.setProperty('--my', `${currentY}%`);
-            frame = null;
-          }
-        };
-
-        const startReflection = () => {
-          if (!frame) frame = requestAnimationFrame(animateReflection);
-        };
-
-        el.addEventListener('pointermove', (event) => {
-          const rect = el.getBoundingClientRect();
-          targetX = ((event.clientX - rect.left) / rect.width) * 100;
-          targetY = ((event.clientY - rect.top) / rect.height) * 100;
-          startReflection();
-        }, { passive: true });
-
-        el.addEventListener('pointerleave', () => {
-          targetX = 28;
-          targetY = 12;
-          startReflection();
-        }, { passive: true });
-      });
-    }
-
-    // Smooth in-page scrolling with a gentle eased landing.
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    let scrollAnimation = null;
-
-    const smoothScrollTo = (destination) => {
-      if (prefersReducedMotion) {
-        window.scrollTo(0, destination);
-        return;
-      }
-
-      if (scrollAnimation) cancelAnimationFrame(scrollAnimation);
-
-      const startY = window.scrollY;
-      const distance = destination - startY;
-      const duration = Math.min(1050, Math.max(620, Math.abs(distance) * 0.42));
-      const startTime = performance.now();
-
-      const ease = (t) => 1 - Math.pow(1 - t, 4);
-
-      const step = (now) => {
-        const progress = Math.min((now - startTime) / duration, 1);
-        window.scrollTo(0, startY + distance * ease(progress));
-
-        if (progress < 1) {
-          scrollAnimation = requestAnimationFrame(step);
-        } else {
-          scrollAnimation = null;
-        }
-      };
-
-      scrollAnimation = requestAnimationFrame(step);
-    };
-
-    document.querySelectorAll('a[href^="#"]').forEach(link => {
-      link.addEventListener('click', (event) => {
-        const href = link.getAttribute('href');
-        if (!href || href === '#') return;
-
-        const target = document.querySelector(href);
-        if (!target) return;
-
-        event.preventDefault();
-        const navOffset = href === '#home' ? 0 : 88;
-        const destination = href === '#home'
-          ? 0
-          : Math.max(0, window.scrollY + target.getBoundingClientRect().top - navOffset);
-
-        smoothScrollTo(destination);
-      });
-    });
+    // Use native CSS smooth scrolling instead of a JavaScript animation loop.
 
     const updateNav = () => nav.classList.toggle('scrolled', window.scrollY > 28);
     updateNav();
     window.addEventListener('scroll', updateNav, { passive: true });
 
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    /* 3D tilt hover — added */
+    document.querySelectorAll('.skill-card, .project-card, .about-note, .stat, .contact-link').forEach(card => {
+      card.classList.add('tilt');
+      let raf = null;
+      card.addEventListener('pointermove', e => {
+        if (raf) return;
+        raf = requestAnimationFrame(() => {
+          raf = null;
+          const r = card.getBoundingClientRect();
+          const px = (e.clientX - r.left) / r.width - .5;
+          const py = (e.clientY - r.top) / r.height - .5;
+          card.style.transform = `perspective(650px) rotateY(${px * 12}deg) rotateX(${-py * 12}deg) translateY(-10px) scale(1.02)`;
+        });
+      });
+      card.addEventListener('pointerleave', () => {
+        card.style.transform = '';
+      });
+    });
+
   </script>
 </body>
 </html>
