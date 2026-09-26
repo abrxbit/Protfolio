@@ -682,16 +682,16 @@
 
       perspective: 1200px;
 
-      transform: rotate(1.6deg);
+      /* Keep the flip card perfectly straight at rest. */
+      transform: none;
 
       transition:
-        transform .45s
-        cubic-bezier(.2,.8,.2,1);
+        transform .62s
+        cubic-bezier(.16,1,.3,1);
     }
 
     .hero-card:hover {
       transform:
-        rotate(0)
         translateY(-8px)
         scale(1.012);
     }
@@ -1150,9 +1150,9 @@
     .project-card {
       transform-style: preserve-3d;
       will-change: transform;
+      /* Transform is eased by the tilt renderer itself to avoid pointer lag. */
       transition:
-        transform .42s cubic-bezier(.16,1,.3,1),
-        box-shadow .42s cubic-bezier(.16,1,.3,1);
+        box-shadow .52s cubic-bezier(.16,1,.3,1);
     }
 
     .about-note:hover,
@@ -1211,13 +1211,8 @@
     ========================================================= */
 
     .projects-head {
-      display: flex;
-
-      align-items: end;
-
-      justify-content: space-between;
-
-      gap: 40px;
+      /* Match the stacked heading rhythm used by the other sections. */
+      display: block;
     }
 
     .project-grid {
@@ -1413,21 +1408,217 @@
 
 
     /* =========================================================
-       REVEAL ANIMATION
+       MOTION SYSTEM — INTRO + SCROLL REVEALS
     ========================================================= */
 
+    /* Use individual transform properties so reveal motion does not
+       fight the existing 3D tilt / hover transforms on cards. */
     .reveal {
       opacity: 0;
-      transform: translateY(22px);
+      translate: 0 42px;
+      scale: .985;
+      filter: blur(9px);
       transition:
-        opacity .7s ease,
-        transform .7s cubic-bezier(.2,.8,.2,1);
+        opacity .9s cubic-bezier(.16,1,.3,1),
+        translate .9s cubic-bezier(.16,1,.3,1),
+        scale .9s cubic-bezier(.16,1,.3,1),
+        filter .8s ease;
+      transition-delay: var(--reveal-delay, 0ms);
+      will-change: opacity, translate, scale, filter;
     }
 
     .reveal.visible {
       opacity: 1;
-      transform: translateY(0);
+      translate: 0 0;
+      scale: 1;
+      filter: blur(0);
     }
+
+    /* Premium first-load choreography. */
+    .nav-wrap {
+      opacity: 0;
+      animation:
+        navEnter .8s .08s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    .hero .eyebrow,
+    .hero h1,
+    .hero-copy,
+    .hero-actions {
+      opacity: 0;
+      filter: blur(9px);
+      animation:
+        heroEnter .92s cubic-bezier(.16,1,.3,1) forwards;
+    }
+
+    .hero .eyebrow { animation-delay: .18s; }
+    .hero h1 { animation-delay: .29s; }
+    .hero-copy { animation-delay: .43s; }
+    .hero-actions { animation-delay: .56s; }
+
+    .hero-card.reveal.visible {
+      animation:
+        heroCardEnter 1.05s .16s cubic-bezier(.16,1,.3,1) both;
+    }
+
+    .gradient {
+      background-size: 180% 100%;
+      animation:
+        gradientBreathe 8s 1.2s ease-in-out infinite alternate;
+    }
+
+    @keyframes navEnter {
+      from {
+        opacity: 0;
+        translate: 0 -18px;
+        scale: .985;
+        filter: blur(10px);
+      }
+      to {
+        opacity: 1;
+        translate: 0 0;
+        scale: 1;
+        filter: blur(0);
+      }
+    }
+
+    @keyframes heroEnter {
+      from {
+        opacity: 0;
+        translate: 0 34px;
+        filter: blur(10px);
+      }
+      to {
+        opacity: 1;
+        translate: 0 0;
+        filter: blur(0);
+      }
+    }
+
+    @keyframes heroCardEnter {
+      0% {
+        opacity: 0;
+        translate: 34px 38px;
+        scale: .94;
+        filter: blur(13px);
+      }
+      100% {
+        opacity: 1;
+        translate: 0 0;
+        scale: 1;
+        filter: blur(0);
+      }
+    }
+
+    @keyframes gradientBreathe {
+      from { background-position: 0% 50%; }
+      to { background-position: 100% 50%; }
+    }
+
+    /* Thin progress line: enough feedback to make scrolling feel alive. */
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 2px;
+      z-index: 1400;
+      pointer-events: none;
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      background:
+        linear-gradient(
+          90deg,
+          var(--cyan),
+          var(--blue),
+          var(--violet)
+        );
+      box-shadow: 0 0 14px rgba(124,199,255,.42);
+      will-change: transform;
+    }
+
+    /* Header becomes slightly denser after leaving the hero top. */
+    .nav-wrap nav {
+      transition:
+        background .35s ease,
+        border-color .35s ease,
+        box-shadow .35s ease,
+        padding .35s cubic-bezier(.2,.8,.2,1);
+    }
+
+    .nav-wrap.is-scrolled nav {
+      padding-top: 7px;
+      padding-bottom: 7px;
+      background:
+        linear-gradient(
+          145deg,
+          rgba(9,18,31,.84),
+          rgba(8,14,25,.66)
+        );
+      border-color: rgba(255,255,255,.2);
+      box-shadow:
+        0 18px 50px rgba(0,0,0,.3),
+        inset 0 1px 0 rgba(255,255,255,.14);
+    }
+
+    /* A small animated cue at the bottom of the opening screen. */
+    .scroll-cue {
+      position: absolute;
+      left: 50%;
+      bottom: 26px;
+      z-index: 5;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      color: rgba(224,235,248,.52);
+      font-size: .68rem;
+      font-weight: 800;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      opacity: 0;
+      translate: -50% 10px;
+      animation:
+        cueEnter .8s 1.05s cubic-bezier(.16,1,.3,1) forwards;
+      transition: opacity .28s ease;
+    }
+
+    .scroll-cue::before {
+      content: "";
+      width: 26px;
+      height: 1px;
+      background:
+        linear-gradient(
+          90deg,
+          transparent,
+          rgba(159,219,255,.88)
+        );
+      transform-origin: 100% 50%;
+      animation: cuePulse 1.8s 1.3s ease-in-out infinite;
+    }
+
+    .scroll-cue.is-hidden {
+      opacity: 0 !important;
+      pointer-events: none;
+    }
+
+    @keyframes cueEnter {
+      to {
+        opacity: 1;
+        translate: -50% 0;
+      }
+    }
+
+    @keyframes cuePulse {
+      0%, 100% { scale: .55 1; opacity: .42; }
+      50% { scale: 1 1; opacity: 1; }
+    }
+
+    /* Slight ambient depth while the page scrolls. */
+    .liquid-scene {
+      translate: 0 var(--ambient-scroll, 0px);
+      will-change: translate;
+    }
+
 
 
     /* =========================================================
@@ -1564,6 +1755,28 @@
       .reveal {
         opacity: 1;
         transform: none;
+        translate: none;
+        scale: 1;
+        filter: none;
+      }
+
+      .nav-wrap,
+      .hero .eyebrow,
+      .hero h1,
+      .hero-copy,
+      .hero-actions,
+      .hero-card.reveal.visible,
+      .gradient,
+      .scroll-cue,
+      .scroll-cue::before {
+        animation: none !important;
+        opacity: 1;
+        translate: none;
+        filter: none;
+      }
+
+      .liquid-scene {
+        translate: none;
       }
 
     }
@@ -3083,47 +3296,168 @@
 
 
     /* =====================================================
-       REVEAL ANIMATION
+       MOTION SYSTEM — SCROLL REVEALS
     ====================================================== */
 
-    const revealObserver =
-      new IntersectionObserver(
-        entries => {
+    const reduceMotion =
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-          entries.forEach(
-            entry => {
+    const revealElements =
+      [...document.querySelectorAll(".reveal")];
 
-              if (
-                entry.isIntersecting
-              ) {
+    /* Give repeated cards a restrained stagger without adding markup. */
+    revealElements.forEach(element => {
+
+      const parent = element.parentElement;
+
+      if (!parent) return;
+
+      const siblings =
+        [...parent.children].filter(
+          sibling => sibling.classList?.contains("reveal")
+        );
+
+      const position = siblings.indexOf(element);
+
+      if (position > 0) {
+        element.style.setProperty(
+          "--reveal-delay",
+          `${Math.min(position * 90, 360)}ms`
+        );
+      }
+
+    });
+
+    if (reduceMotion) {
+
+      revealElements.forEach(
+        element => element.classList.add("visible")
+      );
+
+    } else {
+
+      const revealObserver =
+        new IntersectionObserver(
+          entries => {
+
+            entries.forEach(entry => {
+
+              if (entry.isIntersecting) {
 
                 entry.target
                   .classList
                   .add("visible");
 
                 revealObserver
-                  .unobserve(
-                    entry.target
-                  );
+                  .unobserve(entry.target);
 
               }
 
-            }
-          );
+            });
 
-        },
-        {
-          threshold: .1
-        }
+          },
+          {
+            threshold: .12,
+            rootMargin: "0px 0px -8% 0px"
+          }
+        );
+
+      revealElements.forEach(
+        element => revealObserver.observe(element)
       );
 
+    }
 
-    document
-      .querySelectorAll(".reveal")
-      .forEach(
-        element =>
-          revealObserver.observe(element)
+
+    /* =====================================================
+       SCROLL FEEDBACK + AMBIENT DEPTH
+    ====================================================== */
+
+    const navWrap =
+      document.querySelector(".nav-wrap");
+
+    const hero =
+      document.querySelector(".hero");
+
+    const progress =
+      document.createElement("div");
+
+    progress.className = "scroll-progress";
+    progress.setAttribute("aria-hidden", "true");
+    document.body.appendChild(progress);
+
+    let scrollCue = null;
+
+    if (hero) {
+
+      scrollCue = document.createElement("a");
+      scrollCue.className = "scroll-cue";
+      scrollCue.href = "#about";
+      scrollCue.textContent = "Scroll to explore";
+      scrollCue.setAttribute("aria-label", "Scroll to About section");
+      hero.appendChild(scrollCue);
+
+    }
+
+    let scrollFrame = 0;
+
+    const renderScrollMotion = () => {
+
+      scrollFrame = 0;
+
+      const y = window.scrollY;
+      const maxScroll = Math.max(
+        document.documentElement.scrollHeight - window.innerHeight,
+        1
       );
+
+      progress.style.transform =
+        `scaleX(${Math.min(y / maxScroll, 1)})`;
+
+      if (navWrap) {
+        navWrap.classList.toggle(
+          "is-scrolled",
+          y > 28
+        );
+      }
+
+      if (scrollCue) {
+        scrollCue.classList.toggle(
+          "is-hidden",
+          y > 90
+        );
+      }
+
+      if (!reduceMotion) {
+        document.documentElement.style.setProperty(
+          "--ambient-scroll",
+          `${Math.max(-18, y * -.018)}px`
+        );
+      }
+
+    };
+
+    const requestScrollMotion = () => {
+
+      if (!scrollFrame) {
+        scrollFrame = requestAnimationFrame(renderScrollMotion);
+      }
+
+    };
+
+    window.addEventListener(
+      "scroll",
+      requestScrollMotion,
+      { passive: true }
+    );
+
+    window.addEventListener(
+      "resize",
+      requestScrollMotion,
+      { passive: true }
+    );
+
+    renderScrollMotion();
 
 
     /* =====================================================
@@ -3215,44 +3549,101 @@
         .forEach(card => {
 
           let frame = 0;
-          let latestEvent = null;
+          let hovering = false;
+
+          const current = {
+            rotateX: 0,
+            rotateY: 0,
+            lift: 0,
+            depth: 0,
+            scale: 1
+          };
+
+          const target = {
+            rotateX: 0,
+            rotateY: 0,
+            lift: 0,
+            depth: 0,
+            scale: 1
+          };
+
+          const mix = (from, to, amount) =>
+            from + (to - from) * amount;
+
+          const near = (a, b, epsilon = .01) =>
+            Math.abs(a - b) < epsilon;
 
           const renderTilt = () => {
 
-            frame = 0;
-
-            if (!latestEvent) return;
-
-            const rect =
-              card.getBoundingClientRect();
-
-            const x =
-              (latestEvent.clientX - rect.left) /
-              rect.width - .5;
-
-            const y =
-              (latestEvent.clientY - rect.top) /
-              rect.height - .5;
+            /* Lift settles a touch sooner; rotation follows more slowly. */
+            current.lift = mix(current.lift, target.lift, .105);
+            current.depth = mix(current.depth, target.depth, .095);
+            current.scale = mix(current.scale, target.scale, .095);
+            current.rotateX = mix(current.rotateX, target.rotateX, .072);
+            current.rotateY = mix(current.rotateY, target.rotateY, .072);
 
             card.style.transform =
-              `perspective(850px)
-               rotateY(${x * 24}deg)
-               rotateX(${-y * 24}deg)
-               translate3d(0,-9px,18px)
-               scale(1.018)`;
+              `perspective(900px)
+               rotateY(${current.rotateY.toFixed(3)}deg)
+               rotateX(${current.rotateX.toFixed(3)}deg)
+               translate3d(0,${current.lift.toFixed(3)}px,${current.depth.toFixed(3)}px)
+               scale(${current.scale.toFixed(5)})`;
 
+            const settled =
+              near(current.rotateX, target.rotateX) &&
+              near(current.rotateY, target.rotateY) &&
+              near(current.lift, target.lift) &&
+              near(current.depth, target.depth) &&
+              near(current.scale, target.scale, .0002);
+
+            if (!hovering && settled) {
+              card.style.transform = "";
+              frame = 0;
+              return;
+            }
+
+            frame = requestAnimationFrame(renderTilt);
           };
+
+          const ensureFrame = () => {
+            if (!frame) {
+              frame = requestAnimationFrame(renderTilt);
+            }
+          };
+
+          const updateTargetFromPointer = event => {
+
+            const rect = card.getBoundingClientRect();
+
+            const x =
+              (event.clientX - rect.left) / rect.width - .5;
+
+            const y =
+              (event.clientY - rect.top) / rect.height - .5;
+
+            /* Slightly restrained range keeps the motion premium, not twitchy. */
+            target.rotateY = x * 20;
+            target.rotateX = -y * 20;
+            target.lift = -9;
+            target.depth = 18;
+            target.scale = 1.018;
+
+            ensureFrame();
+          };
+
+          card.addEventListener(
+            "pointerenter",
+            event => {
+              hovering = true;
+              updateTargetFromPointer(event);
+            },
+            { passive: true }
+          );
 
           card.addEventListener(
             "pointermove",
             event => {
-
-              latestEvent = event;
-
-              if (!frame) {
-                frame = requestAnimationFrame(renderTilt);
-              }
-
+              updateTargetFromPointer(event);
             },
             { passive: true }
           );
@@ -3260,16 +3651,13 @@
           card.addEventListener(
             "pointerleave",
             () => {
-
-              latestEvent = null;
-
-              if (frame) {
-                cancelAnimationFrame(frame);
-                frame = 0;
-              }
-
-              card.style.transform = "";
-
+              hovering = false;
+              target.rotateX = 0;
+              target.rotateY = 0;
+              target.lift = 0;
+              target.depth = 0;
+              target.scale = 1;
+              ensureFrame();
             },
             { passive: true }
           );
